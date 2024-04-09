@@ -1,4 +1,4 @@
-package chipyard.example
+package MM
 
 import chisel3._
 import chisel3.util._
@@ -107,11 +107,13 @@ trait MMModule extends HasRegMap {
   val res = Wire(new DecoupledIO(UInt(params.width.W)))
   val status = Wire(UInt(2.W))
 
-  val impl = if (params.useBlackBox) {
-    Module(new MMMMIOBlackBox(params.width))
-  } else {
-    // Module(new GCDMMIOChiselModule(params.width))
-  }
+  // val impl = if (params.useBlackBox) {
+  //   Module(new MMMMIOBlackBox(params.width))
+  // } else {
+  //   Module(new GCDMMIOChiselModule(params.width))
+  // }
+
+  val impl = Module(new MMMMIOBlackBox(params.width))
 
   impl.io.clock := clock
   impl.io.reset := reset.asBool
@@ -145,6 +147,7 @@ class MMTL(params: MMParams, beatBytes: Int)(implicit p: Parameters)
   extends TLRegisterRouter(
     params.address, "mm", Seq("ucbbar,mm"),
     beatBytes = beatBytes)(
+      new TLRegBundle(params, _))(
       // new TLRegBundle(params, _) with MMTopIO)(
       new TLRegModule(params, _, _) with MMModule)
 
@@ -152,6 +155,7 @@ class MMAXI4(params: MMParams, beatBytes: Int)(implicit p: Parameters)
   extends AXI4RegisterRouter(
     params.address,
     beatBytes=beatBytes)(
+      new AXI4RegBundle(params, _))(
       // new AXI4RegBundle(params, _) with MMTopIO)(
       new AXI4RegModule(params, _, _) with MMModule)
 // DOC include end: GCD router
