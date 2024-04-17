@@ -165,23 +165,23 @@ write_out #(
 );
 // for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(quantized_data[i*OUTCOME_WIDTH+:OUTCOME_WIDTH]));
 integer i;
-always @(posedge clk) begin
-	if (cycle_num>=8&&cycle_num<=12) begin
-		$write("top: %d\n",cycle_num);
-		for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(ori_data[(ARRAY_SIZE-i)*ORI_WIDTH-1-:ORI_WIDTH]));	
-		$write("\n");
-		for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(quantized_data[(ARRAY_SIZE-i)*OUTPUT_DATA_WIDTH-1-:OUTPUT_DATA_WIDTH]));
-		$write("\n");
-		$write("%b %d",sram_write_enable_a0, sram_waddr_a);
-		$write("\n");
-		for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(sram_wdata_a[(ARRAY_SIZE-i)*OUTPUT_DATA_WIDTH-1-:OUTPUT_DATA_WIDTH]));
-		$write("\n");
-		for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(sram_wdata_b[(ARRAY_SIZE-i)*OUTPUT_DATA_WIDTH-1-:OUTPUT_DATA_WIDTH]));
-		$write("\n");
-		for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(sram_wdata_c[(ARRAY_SIZE-i)*OUTPUT_DATA_WIDTH-1-:OUTPUT_DATA_WIDTH]));
-		$write("\n");
-	end
-end
+// always @(posedge clk) begin
+// 	if (cycle_num>=8&&cycle_num<=12) begin
+// 		$write("top: %d\n",cycle_num);
+// 		for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(ori_data[(ARRAY_SIZE-i)*ORI_WIDTH-1-:ORI_WIDTH]));	
+// 		$write("\n");
+// 		for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(quantized_data[(ARRAY_SIZE-i)*OUTPUT_DATA_WIDTH-1-:OUTPUT_DATA_WIDTH]));
+// 		$write("\n");
+// 		$write("%b %d",sram_write_enable_a0, sram_waddr_a);
+// 		$write("\n");
+// 		for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(sram_wdata_a[(ARRAY_SIZE-i)*OUTPUT_DATA_WIDTH-1-:OUTPUT_DATA_WIDTH]));
+// 		$write("\n");
+// 		for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(sram_wdata_b[(ARRAY_SIZE-i)*OUTPUT_DATA_WIDTH-1-:OUTPUT_DATA_WIDTH]));
+// 		$write("\n");
+// 		for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(sram_wdata_c[(ARRAY_SIZE-i)*OUTPUT_DATA_WIDTH-1-:OUTPUT_DATA_WIDTH]));
+// 		$write("\n");
+// 	end
+// end
 // [ARRAY_SIZE*OUTPUT_DATA_WIDTH-1:0] quantized_data;
 // [ARRAY_SIZE*OUTPUT_DATA_WIDTH-1:0] sram_wdata_a
 

@@ -156,64 +156,65 @@ always@(*) begin
 
 end
 
-always @(posedge clk) begin
-	if (cycle_num>=FIRST_OUT-1&&cycle_num<=FIRST_OUT+5) begin
-		$write("systolic: %d\n",cycle_num);
-		for(i=0;i<4;i=i+1) begin
-			$write("%d",$signed(sram_rdata_w0[31-8*i-:8]));
-			$write(" ");
-		end
-		$write("\n\n");
-	// end
-	// if (cycle_num>=FIRST_OUT-1&&cycle_num<=FIRST_OUT+1) begin
-	// 	$write("%d\n",cycle_num);
-		// for(i=0;i<4;i=i+1) begin
-		// 	$write("%d",$signed(sram_rdata_w0[31-8*i-:8]));
-		// 	$write(" ");
-		// end
-		// $write("\n\n");
-		for(i=0;i<ARRAY_SIZE;i=i+1) begin
-			for(j=0;j<ARRAY_SIZE;j=j+1) begin
+// always @(posedge clk) begin
+// 	if (cycle_num>=FIRST_OUT-1&&cycle_num<=PARALLEL_START+1) begin
+// 	// if (cycle_num>=0&&cycle_num<=8) begin
+// 		$write("systolic: %d\n",cycle_num);
+// 		for(i=0;i<4;i=i+1) begin
+// 			$write("%d",$signed(sram_rdata_w0[31-8*i-:8]));
+// 			$write(" ");
+// 		end
+// 		$write("\n\n");
+// 	// end
+// 	// if (cycle_num>=FIRST_OUT-1&&cycle_num<=FIRST_OUT+1) begin
+// 	// 	$write("%d\n",cycle_num);
+// 		// for(i=0;i<4;i=i+1) begin
+// 		// 	$write("%d",$signed(sram_rdata_w0[31-8*i-:8]));
+// 		// 	$write(" ");
+// 		// end
+// 		// $write("\n\n");
+// 		for(i=0;i<ARRAY_SIZE;i=i+1) begin
+// 			for(j=0;j<ARRAY_SIZE;j=j+1) begin
 				
-				$write("%d",weight_queue[i][j]);
-				$write(" ");
-			end
-			$write("\n");
-		end
-		$write("\n");
-		for(i=0;i<ARRAY_SIZE;i=i+1) begin
-			for(j=0;j<ARRAY_SIZE;j=j+1) begin
-				$write("%d",data_queue[i][j]);
-				$write(" ");
-			end
-			$write("\n");
-		end
-		$write("\n");
-		for(i=0;i<ARRAY_SIZE;i=i+1) begin
-			for(j=0;j<ARRAY_SIZE;j=j+1) begin
-				$write("%d",matrix_mul_2D_nx[i][j]);
-				$write(" ");
-			end
-			$write("\n");
-		end
-		$write("\n");
-		for(i=0;i<ARRAY_SIZE;i=i+1) begin
-			for(j=0;j<ARRAY_SIZE;j=j+1) begin
-				$write("%d",matrix_mul_2D[i][j]);
-				$write(" ");
-			end
-			$write("\n");
-		end
-		$write("\n\n");
-		if (matrix_index>=0&&matrix_index<=3) begin
-			$write("%d\n",matrix_index);
-			for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(mul_outcome[(ARRAY_SIZE-i)*OUTCOME_WIDTH-1-:OUTCOME_WIDTH]));
-			$write("\n\n");
-		end
-	end
+// 				$write("%d",weight_queue[i][j]);
+// 				$write(" ");
+// 			end
+// 			$write("\n");
+// 		end
+// 		$write("\n");
+// 		for(i=0;i<ARRAY_SIZE;i=i+1) begin
+// 			for(j=0;j<ARRAY_SIZE;j=j+1) begin
+// 				$write("%d",data_queue[i][j]);
+// 				$write(" ");
+// 			end
+// 			$write("\n");
+// 		end
+// 		$write("\n");
+// 		for(i=0;i<ARRAY_SIZE;i=i+1) begin
+// 			for(j=0;j<ARRAY_SIZE;j=j+1) begin
+// 				$write("%d",matrix_mul_2D_nx[i][j]);
+// 				$write(" ");
+// 			end
+// 			$write("\n");
+// 		end
+// 		$write("\n");
+// 		// for(i=0;i<ARRAY_SIZE;i=i+1) begin
+// 		// 	for(j=0;j<ARRAY_SIZE;j=j+1) begin
+// 		// 		$write("%d",matrix_mul_2D[i][j]);
+// 		// 		$write(" ");
+// 		// 	end
+// 		// 	$write("\n");
+// 		// end
+// 		// $write("\n\n");
+// 		// if (matrix_index>=0&&matrix_index<=3) begin
+// 		// 	$write("%d\n",matrix_index);
+// 		// 	for(i=0;i<ARRAY_SIZE;i=i+1) $write("%d",$signed(mul_outcome[(ARRAY_SIZE-i)*OUTCOME_WIDTH-1-:OUTCOME_WIDTH]));
+// 		// 	$write("\n\n");
+// 		// end
+// 	end
 	
 	
-end
+// end
 
 endmodule
 

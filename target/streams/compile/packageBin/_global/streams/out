@@ -2,10 +2,22 @@
 [0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
 [0m[[0m[0mdebug[0m] [0m[0m	vsrc[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc[0m
-[0m[[0m[0mdebug[0m] [0m[0m	vsrc/mid[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc/mid[0m
-[0m[[0m[0mdebug[0m] [0m[0m	vsrc/MMMMIOBlackBox.v[0m
-[0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc/MMMMIOBlackBox.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vsrc/systolic.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc/systolic.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vsrc/bb_ori.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc/bb_ori.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vsrc/write_out.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc/write_out.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vsrc/addr_sel.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc/addr_sel.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vsrc/tpu_top.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc/tpu_top.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vsrc/systolic_controll.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc/systolic_controll.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vsrc/quantize.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc/quantize.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	vsrc/blackbox.v[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/vsrc/blackbox.v[0m
 [0m[[0m[0mdebug[0m] [0m[0m	MM[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/ben/chipyard/generators/MM/target/scala-2.13/classes/MM[0m
 [0m[[0m[0mdebug[0m] [0m[0m	MM/MMParams$.class[0m
