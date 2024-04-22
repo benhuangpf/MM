@@ -30,6 +30,7 @@ case object MMKey extends Field[Option[MMParams]](None)
 class MMIO(val w: Int) extends Bundle {
   val clock = Input(Clock())
   val reset = Input(Bool())
+  val in = Input(UInt(1.W))
   val input_ready = Output(Bool())
   val input_valid = Input(Bool())
   val output_ready = Input(Bool())
@@ -38,23 +39,27 @@ class MMIO(val w: Int) extends Bundle {
   val sram_rdata_a1 = Input(UInt(32.W))
   val sram_rdata_b0 = Input(UInt(32.W))
   val sram_rdata_b1 = Input(UInt(32.W))
-  val sram_raddr_a0 = Input(UInt(10.W))
-  val sram_raddr_a1 = Input(UInt(10.W))
-  val sram_raddr_b0 = Input(UInt(10.W))
-  val sram_raddr_b1 = Input(UInt(10.W))
-  val sram_wdata_c00 = Output(UInt(64.W))
-  val sram_wdata_c01 = Output(UInt(64.W))
-  val sram_wdata_c10 = Output(UInt(64.W))
-  val sram_wdata_c11 = Output(UInt(64.W))
-  val sram_wdata_c20 = Output(UInt(64.W))
-  val sram_wdata_c21 = Output(UInt(64.W))
-  val sram_waddr_c0 = Output(UInt(6.W))
-  val sram_waddr_c1 = Output(UInt(6.W))
-  val sram_waddr_c2 = Output(UInt(6.W))
-  val sram_write_enable_c0 = Output(UInt(1.W))
-  val sram_write_enable_c1 = Output(UInt(1.W))
-  val sram_write_enable_c2 = Output(UInt(1.W))
-  val in = Input(UInt(1.W))
+  val sram_raddr = Input(UInt(10.W))
+  // val sram_raddr_a1 = Input(UInt(10.W))
+  // val sram_raddr_b0 = Input(UInt(10.W))
+  // val sram_raddr_b1 = Input(UInt(10.W))
+  val c00 = Output(UInt(64.W))
+  val c01 = Output(UInt(64.W))
+  val c10 = Output(UInt(64.W))
+  val c11 = Output(UInt(64.W))
+  val c20 = Output(UInt(64.W))
+  val c21 = Output(UInt(64.W))
+  val c30 = Output(UInt(64.W))
+  val c31 = Output(UInt(64.W))
+  val c40 = Output(UInt(64.W))
+  val c41 = Output(UInt(64.W))
+  val c50 = Output(UInt(64.W))
+  val c51 = Output(UInt(64.W))
+  val c60 = Output(UInt(64.W))
+  val c61 = Output(UInt(64.W))
+  val c70 = Output(UInt(64.W))
+  val c71 = Output(UInt(64.W))
+  
   // val busy = Output(Bool())
 }
 
@@ -96,30 +101,34 @@ trait MMModule extends HasRegMap {
 
 
   // How many clock cycles in a PWM cycle?
-  // val rdata_a0 = Wire(new DecoupledIO(UInt(params.width_data.W)))
   val rdata_a0 = Reg(UInt(params.width_data.W))
   val rdata_a1 = Reg(UInt(params.width_data.W))
   val rdata_b0 = Reg(UInt(params.width_data.W))
   val rdata_b1 = Reg(UInt(params.width_data.W))
-  // val raddr_a0 = Wire(new DecoupledIO(UInt(params.width_addr.W)))
-  val raddr_a0 = Wire(UInt(params.width_addr.W))
-  val raddr_a1 = Wire(UInt(params.width_addr.W))
-  val raddr_b0 = Wire(UInt(params.width_addr.W))
-  val raddr_b1 = Wire(UInt(params.width_addr.W))
-  val wdata_c00 = Wire(UInt(params.width_data_c.W))
-  val wdata_c01 = Wire(UInt(params.width_data_c.W))
-  val wdata_c10 = Wire(UInt(params.width_data_c.W))
-  val wdata_c11 = Wire(UInt(params.width_data_c.W))
-  val wdata_c20 = Wire(UInt(params.width_data_c.W))
-  val wdata_c21 = Wire(UInt(params.width_data_c.W))
-  val waddr_c0 = Wire(UInt(params.width_addr_c.W))
-  val waddr_c1 = Wire(UInt(params.width_addr_c.W))
-  val waddr_c2 = Wire(UInt(params.width_addr_c.W))
-  val enable_c0 = Wire(UInt(1.W))
-  val enable_c1 = Wire(UInt(1.W))
-  val enable_c2 = Wire(UInt(1.W))
-  val status = Wire(UInt(2.W))
+  val raddr = Reg(UInt(params.width_addr.W))
+  // val raddr_a1 = Reg(UInt(params.width_addr.W))
+  // val raddr_b0 = Reg(UInt(params.width_addr.W))
+  // val raddr_b1 = Reg(UInt(params.width_addr.W))
   val in = Wire(new DecoupledIO(UInt(1.W)))
+
+  val c00 = Wire(UInt(params.width_data_c.W))
+  val c01 = Wire(UInt(params.width_data_c.W))
+  val c10 = Wire(UInt(params.width_data_c.W))
+  val c11 = Wire(UInt(params.width_data_c.W))
+  val c20 = Wire(UInt(params.width_data_c.W))
+  val c21 = Wire(UInt(params.width_data_c.W))
+  val c30 = Wire(UInt(params.width_data_c.W))
+  val c31 = Wire(UInt(params.width_data_c.W))
+  val c40 = Wire(UInt(params.width_data_c.W))
+  val c41 = Wire(UInt(params.width_data_c.W))
+  val c50 = Wire(UInt(params.width_data_c.W))
+  val c51 = Wire(UInt(params.width_data_c.W))
+  val c60 = Wire(UInt(params.width_data_c.W))
+  val c61 = Wire(UInt(params.width_data_c.W))
+  val c70 = Wire(UInt(params.width_data_c.W))
+  val c71 = Wire(new DecoupledIO(UInt(params.width_data_c.W)))
+  val status = Wire(UInt(2.W))
+  
 
   val impl = Module(new MMMMIOBlackBox(params.width))
   // val impl = Module(new MMMMIOBlackBox(params.width, params.width_addr, params.width_data, params.width_addr_c, params.width_data_c))
@@ -131,36 +140,32 @@ trait MMModule extends HasRegMap {
   impl.io.sram_rdata_a1 := rdata_a1
   impl.io.sram_rdata_b0 := rdata_b0
   impl.io.sram_rdata_b1 := rdata_b1
-  // raddr_a0.valid := impl.io.output_valid
-  // impl.io.output_ready:= raddr_a0.ready
-  // raddr_a0.bits := impl.io.sram_raddr_a0
-  impl.io.sram_raddr_a0 := raddr_a0
-  impl.io.sram_raddr_a1 := raddr_a1
-  impl.io.sram_raddr_b0 := raddr_b0
-  impl.io.sram_raddr_b1 := raddr_b1
-  wdata_c00 := impl.io.sram_wdata_c00
-  wdata_c01 := impl.io.sram_wdata_c01
-  wdata_c10 := impl.io.sram_wdata_c10
-  wdata_c11 := impl.io.sram_wdata_c11
-  wdata_c20 := impl.io.sram_wdata_c20
-  wdata_c21 := impl.io.sram_wdata_c21
-  waddr_c0 := impl.io.sram_waddr_c0
-  waddr_c1 := impl.io.sram_waddr_c1
-  waddr_c2 := impl.io.sram_waddr_c2
-  enable_c0 := impl.io.sram_write_enable_c0
-  enable_c1 := impl.io.sram_write_enable_c1
-  enable_c2 := impl.io.sram_write_enable_c2
+  impl.io.sram_raddr := raddr
+  // impl.io.sram_raddr_a1 := raddr_a1
+  // impl.io.sram_raddr_b0 := raddr_b0
+  // impl.io.sram_raddr_b1 := raddr_b1
   impl.io.input_valid := in.valid
   in.ready := impl.io.input_ready
   impl.io.in := in.bits
 
-  // impl.io.b := b.bits
-  // impl.io.input_valid := b.valid
-  // b.ready := impl.io.input_ready
-
-  // res.bits := impl.io.res
-  // res.valid := impl.io.output_valid
-  // impl.io.output_ready := res.ready
+  c00 := impl.io.c00
+  c01 := impl.io.c01
+  c10 := impl.io.c10
+  c11 := impl.io.c11
+  c20 := impl.io.c20
+  c21 := impl.io.c21
+  c30 := impl.io.c30
+  c31 := impl.io.c31
+  c40 := impl.io.c40
+  c41 := impl.io.c41
+  c50 := impl.io.c50
+  c51 := impl.io.c51
+  c60 := impl.io.c60
+  c61 := impl.io.c61
+  c70 := impl.io.c70
+  c71.bits := impl.io.c71
+  c71.valid := impl.io.output_valid
+  impl.io.output_ready := c71.ready
 
   status := Cat(impl.io.input_ready, impl.io.output_valid)
   // io.gcd_busy := impl.io.busy
@@ -179,24 +184,28 @@ trait MMModule extends HasRegMap {
     0x04 -> Seq(RegField.w(params.width_data, rdata_a1)),
     0x08 -> Seq(RegField.w(params.width_data, rdata_b0)),
     0x0C -> Seq(RegField.w(params.width_data, rdata_b1)),
-    0x10 -> Seq(RegField.w(params.width_addr, raddr_a0)),
-    0x12 -> Seq(RegField.w(params.width_addr, raddr_a1)),
-    0x14 -> Seq(RegField.w(params.width_addr, raddr_b0)),
-    0x16 -> Seq(RegField.w(params.width_addr, raddr_b1)),
-    0x18 -> Seq(RegField.r(params.width_data_c, wdata_c00)),
-    0x20 -> Seq(RegField.r(params.width_data_c, wdata_c01)),
-    0x28 -> Seq(RegField.r(params.width_data_c, wdata_c10)),
-    0x30 -> Seq(RegField.r(params.width_data_c, wdata_c11)),
-    0x38 -> Seq(RegField.r(params.width_data_c, wdata_c20)),
-    0x40 -> Seq(RegField.r(params.width_data_c, wdata_c21)),
-    0x48 -> Seq(RegField.r(params.width_addr_c, waddr_c0)),
-    0x49 -> Seq(RegField.r(params.width_addr_c, waddr_c1)),
-    0x4A -> Seq(RegField.r(params.width_addr_c, waddr_c2)),
-    0x4B -> Seq(RegField.r(1, enable_c0)),
-    0x4C -> Seq(RegField.r(1, enable_c1)),
-    0x4D -> Seq(RegField.r(1, enable_c2)),
-    0x4E -> Seq(RegField.r(2, status)),
-    0x4F -> Seq(RegField.w(1, in))
+    0x10 -> Seq(RegField.w(params.width_addr, raddr)),
+    // 0x12 -> Seq(RegField.w(params.width_addr, raddr_a1)),
+    // 0x14 -> Seq(RegField.w(params.width_addr, raddr_b0)),
+    // 0x16 -> Seq(RegField.w(params.width_addr, raddr_b1)),
+    0x18 -> Seq(RegField.r(params.width_data_c, c00)),
+    0x20 -> Seq(RegField.r(params.width_data_c, c01)),
+    0x28 -> Seq(RegField.r(params.width_data_c, c10)),
+    0x30 -> Seq(RegField.r(params.width_data_c, c11)),
+    0x38 -> Seq(RegField.r(params.width_data_c, c20)),
+    0x40 -> Seq(RegField.r(params.width_data_c, c21)),
+    0x48 -> Seq(RegField.r(params.width_data_c, c30)),
+    0x50 -> Seq(RegField.r(params.width_data_c, c31)),
+    0x58 -> Seq(RegField.r(params.width_data_c, c40)),
+    0x60 -> Seq(RegField.r(params.width_data_c, c41)),
+    0x68 -> Seq(RegField.r(params.width_data_c, c50)),
+    0x70 -> Seq(RegField.r(params.width_data_c, c51)),
+    0x78 -> Seq(RegField.r(params.width_data_c, c60)),
+    0x80 -> Seq(RegField.r(params.width_data_c, c61)),
+    0x88 -> Seq(RegField.r(params.width_data_c, c70)),
+    0x90 -> Seq(RegField.r(params.width_data_c, c71)),
+    0x98 -> Seq(RegField.r(2, status)),
+    0x99 -> Seq(RegField.w(1, in))
   )
 }
 // DOC include end: GCD instance regmap
