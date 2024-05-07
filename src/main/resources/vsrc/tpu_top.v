@@ -35,6 +35,8 @@ module tpu_top#(
 	output sram_write_enable_c0,
 	output [ARRAY_SIZE*OUTPUT_DATA_WIDTH-1:0] sram_wdata_c,
 	output [5:0] sram_waddr_c,
+
+	output [9:0] data_set ,
 	
 	output tpu_done
 );
@@ -54,7 +56,7 @@ wire [5:0] matrix_index;
 
 //----ststolic_controll parameter---
 wire sram_write_enable;
-wire [1:0] data_set;
+// wire [9:0] data_set;
 
 //----write_out parameter----
 // nothing XD
@@ -146,7 +148,7 @@ write_out #(
 	.clk(clk), 
 	.srstn(srstn),
 	.sram_write_enable(sram_write_enable),
-	.data_set(data_set),
+	// .data_set(data_set),
 	.matrix_index(matrix_index),
 	.quantized_data(quantized_data),
 

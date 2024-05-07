@@ -13,7 +13,7 @@ import freechips.rocketchip.util.UIntIsOneOf
 
 // DOC include start: GCD params
 case class MMParams(
-  address: BigInt = 0x4000,
+  address: BigInt = 0x1000,
   width: Int = 32,
   width_addr: Int = 10,
   width_data: Int = 32,
@@ -59,6 +59,8 @@ class MMIO(val w: Int) extends Bundle {
   val c61 = Output(UInt(64.W))
   val c70 = Output(UInt(64.W))
   val c71 = Output(UInt(64.W))
+
+  val sram_num = Input(UInt(10.W))
   
   // val busy = Output(Bool())
 }
@@ -128,6 +130,9 @@ trait MMModule extends HasRegMap {
   val c70 = Wire(UInt(params.width_data_c.W))
   val c71 = Wire(new DecoupledIO(UInt(params.width_data_c.W)))
   val status = Wire(UInt(2.W))
+
+
+  val num = Reg(UInt(params.width_addr.W))
   
 
   val impl = Module(new MMMMIOBlackBox(params.width))
@@ -141,6 +146,7 @@ trait MMModule extends HasRegMap {
   impl.io.sram_rdata_b0 := rdata_b0
   impl.io.sram_rdata_b1 := rdata_b1
   impl.io.sram_raddr := raddr
+  impl.io.sram_num := num
   // impl.io.sram_raddr_a1 := raddr_a1
   // impl.io.sram_raddr_b0 := raddr_b0
   // impl.io.sram_raddr_b1 := raddr_b1
@@ -179,12 +185,13 @@ trait MMModule extends HasRegMap {
     //   RegField.w(params.width, b)), // write-only, y.valid is set on write
     // 0x0C -> Seq(
     //   RegField.r(params.width, res))) // read-only, gcd.ready is set on read
+    0x00 -> Seq(RegField.w(params.width_addr, num)),
+    0x02 -> Seq(RegField.w(params.width_addr, raddr)),
+    0x04 -> Seq(RegField.w(params.width_data, rdata_a0)),
+    0x08 -> Seq(RegField.w(params.width_data, rdata_a1)),
+    0x0C -> Seq(RegField.w(params.width_data, rdata_b0)),
+    0x10 -> Seq(RegField.w(params.width_data, rdata_b1)),        
 
-    0x00 -> Seq(RegField.w(params.width_data, rdata_a0)),
-    0x04 -> Seq(RegField.w(params.width_data, rdata_a1)),
-    0x08 -> Seq(RegField.w(params.width_data, rdata_b0)),
-    0x0C -> Seq(RegField.w(params.width_data, rdata_b1)),
-    0x10 -> Seq(RegField.w(params.width_addr, raddr)),
     // 0x12 -> Seq(RegField.w(params.width_addr, raddr_a1)),
     // 0x14 -> Seq(RegField.w(params.width_addr, raddr_b0)),
     // 0x16 -> Seq(RegField.w(params.width_addr, raddr_b1)),

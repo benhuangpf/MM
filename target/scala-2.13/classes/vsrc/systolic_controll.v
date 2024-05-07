@@ -17,7 +17,7 @@ module systolic_controll#(
 	output reg alu_start,																//shift & multiplcation start
 	output reg [8:0] cycle_num,													//for systolic.v
 	output reg [5:0] matrix_index,													//index for write-out SRAM data
-	output reg [1:0] data_set,
+	output reg [9:0] data_set,
 
 	output reg tpu_done														//done signal
 );
@@ -28,7 +28,7 @@ localparam IDLE = 3'd0, LOAD_DATA = 3'd1, WAIT1 = 3'd2, ROLLING = 3'd3;
 reg [2:0] state;
 reg [2:0] state_nx;
 
-reg [1:0] data_set_nx;
+reg [9:0] data_set_nx;
 
 reg tpu_done_nx;
 
@@ -81,7 +81,8 @@ always@(*) begin
 		end
 
 		ROLLING: begin
-			if(matrix_index==15 && data_set == 1) begin
+			// if(matrix_index==15 && data_set == 1) begin
+			if(matrix_index==15) begin
 				state_nx = IDLE;
 				tpu_done_nx = 1;
 			end
@@ -100,6 +101,7 @@ end
 
 //-----addr_sel: addr_serial_num-----
 always@(*) begin
+	if(!srstn) data_set_nx = 0;
 	case(state)
 		IDLE: begin
 			if(tpu_start)
@@ -134,7 +136,7 @@ always@(*) begin
 			alu_start = 0;
 			cycle_num_nx = 0;
 			matrix_index_nx = 0;
-			data_set_nx = 0;
+			// data_set_nx = 0;
 			sram_write_enable = 0;
 		end
 
@@ -142,7 +144,7 @@ always@(*) begin
 			alu_start = 0;
 			cycle_num_nx = 0;
 			matrix_index_nx = 0;
-			data_set_nx = 0;
+			// data_set_nx = 0;
 			sram_write_enable = 0;
 		end
 
@@ -150,7 +152,7 @@ always@(*) begin
 			alu_start = 0;
 			cycle_num_nx = 0;
 			matrix_index_nx = 0;
-			data_set_nx = 0;
+			// data_set_nx = 0;
 			sram_write_enable = 0;
 		end
 
@@ -164,13 +166,13 @@ always@(*) begin
 				end
 				else begin
 					matrix_index_nx = matrix_index + 1;
-					data_set_nx = data_set;
+					// data_set_nx = data_set;
 				end
 				sram_write_enable = 1;
 			end
 			else begin
 				matrix_index_nx = 0;
-				data_set_nx = data_set;
+				// data_set_nx = data_set;
 				sram_write_enable = 0;
 			end
 		end
@@ -179,7 +181,7 @@ always@(*) begin
 			alu_start = 0;
 			cycle_num_nx = 0;
 			matrix_index_nx = 0;
-			data_set_nx = 0;
+			// data_set_nx = 0;
 			sram_write_enable = 0;
 		end
 		

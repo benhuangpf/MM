@@ -22,6 +22,7 @@ module MMMMIOBlackBox
 	input [SRAM_DATA_WIDTH-1:0] sram_rdata_b1,
 
 	input [9:0] sram_raddr,
+	input [9:0] sram_num,
 
 	output [4*W-1:0] c00,
 	output [4*W-1:0] c01,
@@ -41,32 +42,33 @@ module MMMMIOBlackBox
 	output [4*W-1:0] c71	
 );
 
-reg [63:0] mem_a [0:255];
-reg [63:0] mem_b [0:255];
+reg [63:0] mem_a [0:100][0:11];
+reg [63:0] mem_b [0:100][0:11];
 always @(posedge clock) begin
-	mem_a[sram_raddr] <= {sram_rdata_a0, sram_rdata_a1};
-	mem_b[sram_raddr] <= {sram_rdata_b0, sram_rdata_b1};	
+	mem_a[sram_num][sram_raddr] <= {sram_rdata_a0, sram_rdata_a1};
+	mem_b[sram_num][sram_raddr] <= {sram_rdata_b0, sram_rdata_b1};	
 end
 
+wire [9:0] data_set;
 wire [9:0] tpu_raddr_a0, tpu_raddr_a1, tpu_raddr_b0, tpu_raddr_b1;
 reg [31:0] tpu_rdata_a0, tpu_rdata_a1, tpu_rdata_b0, tpu_rdata_b1;
 always @(posedge clock) begin
-	tpu_rdata_a0 <= mem_a[tpu_raddr_a0][63:32];
-	tpu_rdata_a1 <= mem_a[tpu_raddr_a1][31:0];
-	tpu_rdata_b0 <= mem_b[tpu_raddr_b0][63:32];
-	tpu_rdata_b1 <= mem_b[tpu_raddr_b1][31:0];
+	tpu_rdata_a0 <= mem_a[data_set][tpu_raddr_a0][63:32];
+	tpu_rdata_a1 <= mem_a[data_set][tpu_raddr_a1][31:0];
+	tpu_rdata_b0 <= mem_b[data_set][tpu_raddr_b0][63:32];
+	tpu_rdata_b1 <= mem_b[data_set][tpu_raddr_b1][31:0];
 end
 
 reg [127:0] mem_c0 [0:15];
-reg [127:0] mem_c1 [0:15];
-reg [127:0] mem_c2 [0:15];
+// reg [127:0] mem_c1 [0:15];
+// reg [127:0] mem_c2 [0:15];
 wire tpu_write_enable_c0, tpu_write_enable_c1, tpu_write_enable_c2;
 wire [5:0]   tpu_waddr_c0, tpu_waddr_c1, tpu_waddr_c2;
 wire [127:0] tpu_wdata_c0, tpu_wdata_c1, tpu_wdata_c2;
 always @(posedge clock) begin
 	if(!tpu_write_enable_c0) mem_c0[tpu_waddr_c0] <= tpu_wdata_c0;
-	if(!tpu_write_enable_c1) mem_c1[tpu_waddr_c1] <= tpu_wdata_c1;
-	if(!tpu_write_enable_c2) mem_c2[tpu_waddr_c2] <= tpu_wdata_c2;
+	// if(!tpu_write_enable_c1) mem_c1[tpu_waddr_c1] <= tpu_wdata_c1;
+	// if(!tpu_write_enable_c2) mem_c2[tpu_waddr_c2] <= tpu_wdata_c2;
 end
 
 assign c00 = {mem_c0[0][(8*W-1)-:W], mem_c0[1][(8*W-1)-:W], mem_c0[2][(8*W-1)-:W], mem_c0[ 3][(8*W-1)-:W]};assign c01 = {mem_c0[ 4][(8*W-1)-:W], mem_c0[ 5][(8*W-1)-:W], mem_c0[ 6][(8*W-1)-:W], mem_c0[ 7][(8*W-1)-:W]};
@@ -102,13 +104,15 @@ tpu_top my_tpu_top(
 	.sram_wdata_a(tpu_wdata_c0),
 	.sram_waddr_a(tpu_waddr_c0),
 
-	.sram_write_enable_b0(tpu_write_enable_c1),
-	.sram_wdata_b(tpu_wdata_c1),
-	.sram_waddr_b(tpu_waddr_c1),
+	// .sram_write_enable_b0(tpu_write_enable_c1),
+	// .sram_wdata_b(tpu_wdata_c1),
+	// .sram_waddr_b(tpu_waddr_c1),
 
-	.sram_write_enable_c0(tpu_write_enable_c2),
-	.sram_wdata_c(tpu_wdata_c2),
-	.sram_waddr_c(tpu_waddr_c2),
+	// .sram_write_enable_c0(tpu_write_enable_c2),
+	// .sram_wdata_c(tpu_wdata_c2),
+	// .sram_waddr_c(tpu_waddr_c2),
+
+	.data_set(data_set),
 
 	.tpu_done(tpu_finish)
 );
